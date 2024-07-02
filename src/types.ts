@@ -1,7 +1,16 @@
+/**
+ * Generic type of null
+ */
 export declare type Null = null | undefined
 
+/**
+ * Generic type for nullable values
+ */
 export declare type Nullable<T = any> = Null | T
 
+/**
+ * Generic type for nullable values
+ */
 export declare type Nullish<T = any> = Nullable<T>
 
 /**

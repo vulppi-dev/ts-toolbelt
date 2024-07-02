@@ -8,6 +8,12 @@ type UnionFunctionType =
   | undefined
   | null
 
+/**
+ * Executes an array of functions serially.
+ *
+ * @param {UnionFunctionType[]} fns - Array of functions to execute serially.
+ * @return {VoidFunction} A function that executes the array of functions serially.
+ */
 export const unionSerialFunctions =
   (...fns: UnionFunctionType[]): VoidFunction =>
   (): void => {
@@ -22,9 +28,23 @@ export const unionSerialFunctions =
     }
   }
 
-export const promiseDelay = (ms: number): Promise<never> =>
-  new Promise<never>((resolve) => setTimeout(resolve, ms))
+/**
+ * Creates a promise that resolves after a specified time delay.
+ *
+ * @param {number} ms - The time delay in milliseconds.
+ * @return {Promise<void>} A promise that resolves after the specified time delay.
+ */
+export const promiseDelay = (ms: number): Promise<void> =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms))
 
+/**
+ * Creates a deep copy of the given object.
+ * If the browser doesn't support structuredClone, it will fallback to JSON.parse(JSON.stringify())
+ *
+ * @template E - The type of the object to be cloned.
+ * @param {E} obj - The object to be cloned.
+ * @returns {E} - The cloned object.
+ */
 export function clone<E extends any>(obj: E): E {
   if (typeof structuredClone !== 'function') {
     return JSON.parse(JSON.stringify(obj)) as E
@@ -33,6 +53,13 @@ export function clone<E extends any>(obj: E): E {
   }
 }
 
+/**
+ * Returns a new object with all the properties of the input object removed that are specified in the keys parameter.
+ *
+ * @param {P} obj - The input object.
+ * @param {...K[]} keys - The keys of the properties to be removed.
+ * @return {Omit<P, K>} - A new object with the specified properties removed.
+ */
 export function omitShallowProps<P extends object, K extends keyof P>(
   obj: P,
   ...keys: K[]
@@ -44,6 +71,13 @@ export function omitShallowProps<P extends object, K extends keyof P>(
   return ret
 }
 
+/**
+ * Executes the 'run' function within a try-catch block and calls 'cbErr' if an error occurs.
+ *
+ * @param {R} run - The function to be executed.
+ * @param {any} cbErr - The callback function to handle errors.
+ * @return {void} This function does not return anything.
+ */
 export function tryCatchCallback<R extends Function>(run: R, cbErr: any): void {
   try {
     return run()
@@ -53,6 +87,12 @@ export function tryCatchCallback<R extends Function>(run: R, cbErr: any): void {
   }
 }
 
+/**
+ * Omit all nullable values from an object recursively.
+ *
+ * @param {R extends object} obj - The input object to omit nullables from.
+ * @return {R} The object with all null and undefined values removed.
+ */
 export function omitNullables<R extends object>(obj: R): R {
   if (typeof obj !== 'object') return obj
   if (Array.isArray(obj))
